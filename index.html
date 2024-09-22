@@ -46,6 +46,28 @@
                     <br/>Fast and Generalizable 3D Gaussian Heads
                 </h1>
 
+                <div class="is-size-5 publication-authors">
+                        <span class="author-block">
+                          <a href="https://tobias-kirschstein.github.io/" target="_blank">Tobias Kirschstein</a><sup>1</sup>,</span>
+                    <span class="author-block">
+                          <a href="https://simongiebenhain.github.io/" target="_blank">Simon Giebenhain</a><sup>1</sup>,
+                        </span>
+                    <span class="author-block">
+                          <a href="https://tangjiapeng.github.io/" target="_blank">Jiapeng Tang</a><sup>1</sup>,
+                        </span>
+                    <span class="author-block">
+                          <a href="https://scholar.google.com/citations?user=id7vw0UAAAAJ&hl=en" target="_blank">Markos Georgopoulos</a><sup>2</sup>,
+                        </span>
+                    <span class="author-block">
+                          <a href="https://niessnerlab.org/" target="_blank">Matthias Nie&szlig;ner</a><sup>1</sup>
+                        </span>
+                </div>
+
+                <div class="is-size-5 publication-authors">
+                    <span class="author-block"><sup>1</sup>Technical University of Munich</span>,
+                    <span class="author-block"><sup>2</sup>Independent Researcher</span>
+                </div>
+
                 <div class="column has-text-centered">
                     <div class="publication-links">
                         <!-- PDF Link. -->
@@ -174,7 +196,20 @@
                         type="video/mp4">
             </video>
             <center><i>
-                Uncurated samples from GGHead (seeds 0-15)
+                Uncurated samples from GGHead on FFHQ (seeds 0-15)
+            </i></center>
+        </div>
+
+        <br />
+        <br />
+        <div class="container is-max-desktop">
+            <h2 class="title is-3 has-text-centered">3D Head Generation on AFHQ-512</h2>
+            <video id="gghead-samples" autoplay muted loop playsinline height="100%">
+                <source src="./static/videos/mosaic_GGH-1225_6,7,8,9,10,11,12,13.mp4"
+                        type="video/mp4">
+            </video>
+            <center><i>
+                Curated samples from GGHead on AFHQ (seeds 6-13)
             </i></center>
         </div>
     </div>
@@ -251,6 +286,31 @@
                     GGHead maintains a high rendering quality even for extreme side-views.
                 </i></center>
             </div>
+        </div>
+    </section>
+
+    <!-- Related Links -->
+    <section id="gghead-related-links" class="hero">
+        <div class="hero-body">
+            <div class="container is-max-desktop">
+                <h2 class="title is-3 has-text-centered">Related Links</h2>
+                <ul>
+                    <li><a href="https://nvlabs.github.io/eg3d/">EG3D</a>: Our work builds on top of the excellent training pipeline of EG3D and uses their visualizer</li>
+                    <li><a href="https://research.nvidia.com/labs/nxp/wysiwyg/">What You See Is What You GAN</a>: Another state-of-the-art 3D GAN that does not need a 2D super-resolution network. Some of our visualizations are inspired by their work.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="BibTeX">
+        <div class="container is-max-desktop content">
+            <h2 class="title" style="text-align: center">BibTeX</h2>
+            <pre><code>@article{kirschstein2024gghead,
+  title={GGHead: Fast and Generalizable 3D Gaussian Heads},
+  author={Kirschstein, Tobias and Giebenhain, Simon and Tang, Jiapeng and Georgopoulos, Markos and Nie{\ss}ner, Matthias},
+  journal={arXiv preprint arXiv:2406.09377},
+  year={2024}
+}</code></pre>
         </div>
     </section>
 

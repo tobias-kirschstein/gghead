@@ -99,3 +99,7 @@ a:hover {
     user-select: none; /* Non-prefixed version, currently
                                   supported by Chrome, Edge, Opera and Firefox */
 }
+
+#gghead-related-links ul {
+    list-style: disc;
+}

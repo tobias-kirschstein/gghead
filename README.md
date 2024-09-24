@@ -3,7 +3,7 @@
 <!-- TODO: Update paper -->
 [Paper](https://tobias-kirschstein.github.io/gghead/static/GGHead_paper.pdf) | [Video](https://youtu.be/1iyC74neQXc) | [Project Page](https://tobias-kirschstein.github.io/gghead/)
 
-<!-- TODO: Teaser GIF -->
+![](static/teaser.gif)
 
 [Tobias Kirschstein](tobias-kirschstein.github.io), [Simon Giebenhain](https://simongiebenhain.github.io/), [Jiapeng Tang](https://tangjiapeng.github.io/), [Markos Georgopoulos](https://scholar.google.com/citations?user=id7vw0UAAAAJ&hl=en), and [Matthias Nießner](https://www.niessnerlab.org/)  
 **Siggraph Asia 2024**

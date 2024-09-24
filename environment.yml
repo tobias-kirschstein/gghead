@@ -1,0 +1,46 @@
+# Note: conda dependencies have only 1 "="
+#       pip dependencies have 2 "=="
+# Fuse pip dependencies together under one " - pip" item
+#       Otherwise, only some of the are installed, because conda creates a temporary requirements.txt file
+#       only the last -pip section
+
+name: gghead
+
+channels:
+  - pytorch
+  - conda-forge
+  - nvidia/label/cuda-11.8.0
+
+dependencies:
+  - python=3.8
+  - pip
+  - jupyter
+
+  # CUDA and PyTorch
+  - gcc
+  - pytorch
+  - torchvision
+  - pytorch-cuda=11.8
+  - cuda-nvcc  # for nvcc
+  - cuda-cudart-dev  # for cuda_runtime.h
+  - cuda-toolkit
+  - libcusparse-dev
+
+  - pip:
+      - tyro
+      - environs
+
+      - elias==0.3.4
+      - dreifus
+      - mediapy
+      - wandb
+      - pytorch_lightning
+
+      # For EG3D visualizer
+      - eg3d@git+https://github.com/tobias-kirschstein/eg3d.git
+      - imgui==1.3.0
+      - glfw==2.2.0
+      - pyopengl==3.1.5
+
+      # Data processing
+      - visage >= 0.2.2

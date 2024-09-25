@@ -1,6 +1,5 @@
 # GGHead: Fast and Generalizable 3D Gaussian Heads
 
-<!-- TODO: Update paper -->
 [Paper](https://tobias-kirschstein.github.io/gghead/static/GGHead_paper.pdf) | [Video](https://youtu.be/1iyC74neQXc) | [Project Page](https://tobias-kirschstein.github.io/gghead/)
 
 ![](static/teaser.gif)

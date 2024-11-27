@@ -15,7 +15,7 @@ from elias.util.batch import batchify_sliced
 from tqdm import tqdm
 
 from gghead.constants import DEFAULT_INTRINSICS
-from gghead.env import GGH_RENDERINGS_PATH
+from gghead.env import GGHEAD_RENDERINGS_PATH
 from gghead.model_manager.finder import find_model_manager
 
 
@@ -67,7 +67,7 @@ def main(run_name: str,
                                      neural_rendering_resolution=resolution)
                 frames = [Img.from_normalized_torch(image).to_numpy().img[..., :3] for image in output['image']]
                 all_frames.extend(frames)
-            output_folder = f"{GGH_RENDERINGS_PATH}/sampled_heads/{run_name}"
+            output_folder = f"{GGHEAD_RENDERINGS_PATH}/sampled_heads/{run_name}"
             ensure_directory_exists(output_folder)
             mediapy.write_video(f"{output_folder}/{seed:04d}.mp4", all_frames, fps=24)
 

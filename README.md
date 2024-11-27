@@ -45,6 +45,10 @@
        TORCH_CUDA_ARCH_LIST="8.0" pip install gaussian_splatting@git+https://github.com/tobias-kirschstein/gaussian-splatting.git
        ```
        Choose the correct compute architecture(s) that match your setup. Consult [this website](https://arnon.dk/matching-sm-architectures-arch-and-gencode-for-various-nvidia-cards/) if unsure about the compute architecture of your graphics card.
+5. Finally install the `gghead` module via:
+   ```bash
+   pip install -e .
+   ```
 
 ## 1.2. Environment Paths
 

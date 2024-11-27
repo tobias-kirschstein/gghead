@@ -176,7 +176,7 @@ class GGHeadImageFolderDataset(Dataset):
         return labels
 
 
-class GGHMaskImageFolderDataset(Dataset):
+class GGHeadMaskImageFolderDataset(Dataset):
     def __init__(self, config: GGHeadImageFolderDatasetConfig):
         self._config = config
 

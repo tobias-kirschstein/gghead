@@ -25,6 +25,7 @@ dependencies:
   - cuda-cudart-dev  # for cuda_runtime.h
   - cuda-toolkit
   - libcusparse-dev
+  - glm  # For gsplat
 
   - pip:
       - tyro

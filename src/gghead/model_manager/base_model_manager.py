@@ -11,8 +11,8 @@ from elias.manager.model import _ModelConfigType, _OptimizationConfigType, _Mode
 from silberstral.silberstral import create_linked_type_var
 
 from gghead.dataset.image_folder_dataset import GGHeadImageFolderDatasetConfig
-from gghead.eg3d.loss import GGHStyleGAN2LossConfig
-from gghead.env import GGH_MODELS_PATH
+from gghead.eg3d.loss import GGHeadStyleGAN2LossConfig
+from gghead.env import GGHEAD_MODELS_PATH
 from gghead.models.gaussian_discriminator import GaussianDiscriminator, GaussianDiscriminatorConfig
 from gghead.models.gghead_model import GGHeadConfig
 from gghead.util.name_builder import NameBuilder
@@ -52,7 +52,7 @@ class GGHeadGANOptimizerConfig(Config):
     generator_optimizer_config: OptimizerConfig
     discriminator_optimizer_config: OptimizerConfig
 
-    loss_config: GGHStyleGAN2LossConfig
+    loss_config: GGHeadStyleGAN2LossConfig
 
     batch_size: int = 16
     separate_lr_template_offsets: Optional[
@@ -106,7 +106,7 @@ class BaseModelManager(
         None, GGHeadGANConfig, GGHeadGANOptimizerConfig, GGHeadImageFolderDatasetConfig, GGHeadTrainSetup, GGHeadEvaluationConfig, GGHeadEvaluationResult]):
     def __init__(self, model_type: str, run_name: str, checkpoints_sub_folder: Optional[str] = "checkpoints",
                  checkpoint_name_format: str = "checkpoint-$.pkl"):
-        super().__init__(f"{GGH_MODELS_PATH}/{model_type}", run_name,
+        super().__init__(f"{GGHEAD_MODELS_PATH}/{model_type}", run_name,
                          checkpoints_sub_folder=checkpoints_sub_folder, checkpoint_name_format=checkpoint_name_format)
         self._evaluations_sub_folder = 'evaluations'
 
@@ -220,7 +220,7 @@ _BaseModelManagerType = create_linked_type_var(_RunManagerType, bound=BaseModelM
 
 class BaseModelFolder(ModelFolder[_BaseModelManagerType]):
     def __init__(self, model_type: str, prefix: str):
-        super().__init__(f"{GGH_MODELS_PATH}/{model_type}", prefix, localize_via_run_name=True)
+        super().__init__(f"{GGHEAD_MODELS_PATH}/{model_type}", prefix, localize_via_run_name=True)
         self._name_format = f"{self._prefix}-$[_*]"  # Overwrite default name format s.t. there is a underscore after run name
 
     def new_run(self, name: Optional[str] = None) -> _BaseModelManagerType:

@@ -16,7 +16,7 @@ from gghead.util.logging import LoggerBundle
 
 
 @dataclass
-class GGHStyleGAN2LossConfig(Config):
+class GGHeadStyleGAN2LossConfig(Config):
     r1_gamma: float = 10
     style_mixing_prob: float = 0
     pl_weight: float = 0
@@ -70,10 +70,8 @@ class GGHStyleGAN2LossConfig(Config):
     lambda_tv_learnable_template_offsets: float = 0
     lambda_tv_uv_rendering: float = 0
     tv_uv_include_transparent_gaussians: bool = False  # Whether, to apply the UV TV loss on a UV rendering that also includes transparent gaussians
-    lambda_auxiliary_opacity: float = 0
     lambda_beta_loss: float = 0
 
-    use_gaussian_maintenance: bool = implicit(False)
     pretrained_resolution: Optional[int] = implicit()
 
     # Masks
@@ -100,13 +98,13 @@ class GGHStyleGAN2LossConfig(Config):
                 or self.lambda_raw_scale_std > 0)
 
 
-class GGHStyleGAN2Loss(StyleGAN2Loss):
+class GGHeadStyleGAN2Loss(StyleGAN2Loss):
     def __init__(self,
                  device,
                  G,
                  D,
                  augment_pipe=None,
-                 config: GGHStyleGAN2LossConfig = GGHStyleGAN2LossConfig(),
+                 config: GGHeadStyleGAN2LossConfig = GGHeadStyleGAN2LossConfig(),
                  logger_bundle: LoggerBundle = LoggerBundle()) -> None:
         self._config = config
         self._logger_bundle = logger_bundle
@@ -280,9 +278,6 @@ class GGHStyleGAN2Loss(StyleGAN2Loss):
                 if isinstance(self.G, GGHeadModel):
                     gen_img, _gen_ws = self.run_G(gen_z, gen_c, swapping_prob=swapping_prob, neural_rendering_resolution=neural_rendering_resolution,
                                                   return_raw_attributes=self._config.requires_raw_gaussian_attributes(),
-                                                  return_gaussian_maintenance=self._config.use_gaussian_maintenance,
-                                                  return_auxiliary_attributes=self._config.lambda_auxiliary_opacity > 0,
-                                                  return_uv_map=self._config.use_gaussian_maintenance,
                                                   alpha_new_layers=alpha_new_layers_gen,
                                                   alpha_plane_resolution=alpha_plane_resolution)
                 else:
@@ -290,18 +285,10 @@ class GGHStyleGAN2Loss(StyleGAN2Loss):
                 gen_logits = self.run_D(gen_img, gen_c, blur_sigma=blur_sigma, alpha_new_layers_disc=alpha_new_layers_disc, effective_res_disc=effective_res_disc,
                                         other_img=real_img)
 
-                # training_stats.report('Loss/scores/fake', gen_logits)
-                # training_stats.report('Loss/signs/fake', gen_logits.sign())
                 loss_Gmain = torch.nn.functional.softplus(-gen_logits)
 
-                # TODO: Remove!!!!!!!!!
-                # L2 Reconstruction loss
-                # gen_img, _gen_ws = self.run_G(gen_z, real_c, swapping_prob=swapping_prob, neural_rendering_resolution=neural_rendering_resolution)
-                # loss_Gmain = (gen_img['image'] - real_img['image']).square().mean()
                 if loss_Gmain.isnan().any():
                     print("loss_Gmain IS NAN!")
-                # print(f"loss_G: {loss_Gmain.mean().item():0.3f}")
-                # training_stats.report('Loss/G/loss', loss_Gmain)
 
                 self._logger_bundle.log_metrics({
                     'Loss/scores/fake': gen_logits,
@@ -373,65 +360,6 @@ class GGHStyleGAN2Loss(StyleGAN2Loss):
                         }, step=cur_nimg)
                         loss_Gmain = loss_Gmain + self._config.lambda_raw_gaussian_opacity * reg_raw_gaussian_opacity
 
-                    # Learnable Template offsets
-                    if self._config.lambda_learnable_template_offsets > 0:
-                        reg_learnable_template_offsets = self.G._learnable_template_offsets.norm(dim=-1).mean(dim=1)  # [B]
-                        self._logger_bundle.log_metrics({
-                            'Loss/G/reg_learnable_template_offsets': reg_learnable_template_offsets
-                        }, step=cur_nimg)
-                        loss_Gmain = loss_Gmain + self._config.lambda_learnable_template_offsets * reg_learnable_template_offsets
-
-                    if self._config.lambda_tv_learnable_template_offsets > 0:
-                        reg_tv_learnable_template_offsets_y = (self.G._learnable_template_offsets[:, :, 1:] - self.G._learnable_template_offsets[:, :, :-1]).square().sum()
-                        reg_tv_learnable_template_offsets_x = (self.G._learnable_template_offsets[:, :, :, 1:] - self.G._learnable_template_offsets[:, :, :, :-1]).square().sum()
-                        reg_tv_learnable_template_offsets = reg_tv_learnable_template_offsets_x + reg_tv_learnable_template_offsets_y
-
-                        self._logger_bundle.log_metrics({
-                            'Loss/G/reg_tv_learnable_template_offsets': reg_tv_learnable_template_offsets
-                        }, step=cur_nimg)
-                        loss_Gmain = loss_Gmain + self._config.lambda_tv_learnable_template_offsets * reg_tv_learnable_template_offsets
-
-                    # Gaussian Attributes
-                    if self._config.lambda_gaussian_position > 0:
-                        gaussian_positions = self.G._apply_position_activation(raw_gaussian_attributes[GaussianAttribute.POSITION])
-
-                        gaussian_positions_to_regularize = torch.cat(
-                            [gaussian_positions[gaussian_positions > self._config.reg_gaussian_position_above] - self._config.reg_gaussian_position_above,
-                             gaussian_positions[gaussian_positions < self._config.reg_gaussian_position_below] - self._config.reg_gaussian_position_below])
-                        if len(gaussian_positions_to_regularize) > 0:
-                            reg_gaussian_position = gaussian_positions_to_regularize.square().mean()
-                            # reg_gaussian_position = gaussian_positions.norm(dim=-1).mean(dim=1)  # [B]
-                            self._logger_bundle.log_metrics({
-                                'Loss/G/reg_gaussian_position': reg_gaussian_position
-                            }, step=cur_nimg)
-                            loss_Gmain = loss_Gmain + self._config.lambda_gaussian_position * reg_gaussian_position
-
-                    if self._config.lambda_gaussian_scale > 0:
-                        gaussian_scales = self.G._gaussian_model.scaling_activation(gaussian_attributes[GaussianAttribute.SCALE])
-                        gaussian_scales_to_regularize = torch.cat(
-                            [gaussian_scales[gaussian_scales > self._config.reg_gaussian_scale_above] - self._config.reg_gaussian_scale_above,
-                             gaussian_scales[
-                                 gaussian_scales < self._config.reg_gaussian_scale_below] - self._config.reg_gaussian_scale_below])
-                        if len(gaussian_scales_to_regularize) > 0:
-                            reg_gaussian_scale = torch.cat(
-                                [gaussian_scales[gaussian_scales > self._config.reg_gaussian_scale_above] - self._config.reg_gaussian_scale_above,
-                                 gaussian_scales[
-                                     gaussian_scales < self._config.reg_gaussian_scale_below] - self._config.reg_gaussian_scale_below]).square().mean()
-
-                            # reg_gaussian_scale = gaussian_attributes[GaussianAttribute.SCALE].norm(dim=-1).mean(dim=1)  # [B]
-                            self._logger_bundle.log_metrics({
-                                'Loss/G/reg_gaussian_scale': reg_gaussian_scale
-                            }, step=cur_nimg)
-                            loss_Gmain = loss_Gmain + self._config.lambda_gaussian_scale * reg_gaussian_scale
-
-                    if self._config.lambda_auxiliary_opacity > 0:
-                        auxiliary_opacities = self.G._apply_opacity_activation(gen_img.gaussian_attribute_output.auxiliary_gaussian_attributes[GaussianAttribute.OPACITY])
-                        reg_auxiliary_opacities = auxiliary_opacities.mean()
-                        self._logger_bundle.log_metrics({
-                            'Loss/G/reg_auxiliary_opacities': reg_auxiliary_opacities
-                        }, step=cur_nimg)
-                        loss_Gmain = loss_Gmain + self._config.lambda_auxiliary_opacity * reg_auxiliary_opacities
-
                     if self._config.lambda_beta_loss > 0:
                         opacities = self.G._apply_opacity_activation(gen_img.gaussian_attribute_output.gaussian_attributes[GaussianAttribute.OPACITY])
                         beta_loss = ((0.1 + opacities).log() + (1.1 - opacities).log() + 2.20727).mean()
@@ -468,14 +396,6 @@ class GGHStyleGAN2Loss(StyleGAN2Loss):
                 gradients_with_nan = [n for n, p in self.G.named_parameters() if p.grad is not None and p.grad.isnan().any()]
                 if len(gradients_with_nan) > 0:
                     print(f"loss_Gmain NAN GRADIENTS: {gradients_with_nan}")
-
-            # Gaussian Maintenance
-            if self._config.use_gaussian_maintenance:
-                if isinstance(self.G, GGHeadModel):
-                    opacities = self.G._apply_opacity_activation(gen_img.gaussian_attribute_output.gaussian_attributes[GaussianAttribute.OPACITY])[..., 0].detach()
-                    # TODO: This assumes position_start_channel to be correct
-                    uv_maps = gen_img.gaussian_attribute_output.uv_map.detach()
-                    self.G.do_gaussian_maintenance(gen_img.viewspace_points, gen_img.visibility_filters, gen_img.radii, opacities, uv_maps, cur_nimg)
 
         # Dmain: Minimize logits for generated images.
         loss_Dgen = 0

@@ -3,7 +3,7 @@ from typing import Optional, List
 
 from elias.config import Config
 
-from gghead.env import GGH_RENDERINGS_PATH
+from gghead.env import GGHEAD_RENDERINGS_PATH
 from gghead.model_manager.finder import find_model_folder
 from gghead.util.name_builder import NameBuilder
 
@@ -31,7 +31,7 @@ class InterpolationRenderingManager:
         prefix = model_folder.get_prefix()
         c = self._config
         c_default = InterpolationRenderingConfig(None)
-        output_folder = f"{GGH_RENDERINGS_PATH}/interpolations/{prefix}"
+        output_folder = f"{GGHEAD_RENDERINGS_PATH}/interpolations/{prefix}"
         prefix = f"{c.run_name}_ckpt-{c.checkpoint}"
 
         nb = NameBuilder(c, c_default, prefix=prefix, suffix='.mp4')

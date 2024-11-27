@@ -553,9 +553,7 @@ def main(
     # ----------------------------------------------------------
 
     if generator_type == 'gaussians':
-        group_name = 'generative-gaussian-heads'
-    elif generator_type == 'GSM':
-        group_name = 'gaussian-shell-maps'
+        group_name = 'gghead'
     elif generator_type == 'triplanes':
         group_name = 'eg3d'
     else:

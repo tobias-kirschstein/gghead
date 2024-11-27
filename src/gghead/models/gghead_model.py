@@ -141,11 +141,11 @@ class GGHeadConfig(Config):
     use_rotation_activation: bool = False
     use_periodic_rotation_activation: bool = False  # If true, will use sine() activation instead of tanh()
     normalize_quaternions: bool = True
-    position_attenuation: float = 1e-2
+    position_attenuation: float = 1
     position_range: float = 1  # Maximum range that predicted positions can have. 1 means [-1, 1]
-    color_attenuation: float = 1e-2
-    scale_attenuation: float = 1e-2
-    rotation_attenuation: float = 1e-2
+    color_attenuation: float = 1
+    scale_attenuation: float = 1
+    rotation_attenuation: float = 1
     scale_offset: float = -5
     additional_scale_offset: float = 0
     max_scale: float = 1

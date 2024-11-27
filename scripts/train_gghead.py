@@ -173,6 +173,8 @@ def main(
 
     # Initialize config.
     if use_gaussians:
+        if neural_rendering_resolution is None:
+            neural_rendering_resolution = resolution
         neural_rendering_resolution_initial = neural_rendering_resolution
     elif neural_rendering_resolution == resolution:
         neural_rendering_resolution_initial = neural_rendering_resolution

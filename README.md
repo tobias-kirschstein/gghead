@@ -70,13 +70,13 @@ Please create a file in your home directory in `~/.config/gghead/.env` with the 
 ```python
 GGHEAD_DATA_PATH="..."
 GGHEAD_MODELS_PATH="..."
-GGHEAD_RENDERS_PATH="..."
+GGHEAD_RENDERINGS_PATH="..."
 ```
 Replace the ... with the locations where data / models / renderings should be located on your machine.
 
  - `GGHEAD_DATA_PATH`: Location of the FFHQ dataset and foreground masks. Only needed for training. See [Section 2](#2-data) for how to obtain the datasets.
  - `GGHEAD_MODELS_PATH`: During training, model checkpoints and configs will be saved here. See [Section 4](#4-downloads) for downloading pre-trained models.
- - `GGHEAD_RENDERS_PATH`: Video renderings of trained models will be stored here
+ - `GGHEAD_RENDERINGS_PATH`: Video renderings of trained models will be stored here
 
 If you do not like creating a config file in your home directory, you can instead hard-code the paths in the [env.py](src/gghead/env.py).
 
@@ -99,7 +99,7 @@ From a trained model `GGHEAD-xxx`, render short videos of randomly sampled 3D he
 python scripts/sample_heads.py GGHEAD-xxx
 ```
 Replace `xxx` with the actual ID of the model.  
-The generated videos will be placed into `${GGHEAD_RENDERS_PATH}/sampled_heads/`  
+The generated videos will be placed into `${GGHEAD_RENDERINGS_PATH}/sampled_heads/`  
 ![GGHead Visualizer Showcase](static/example_sampled_head.gif)  
 
 ### 3.2.2. Interpolations
@@ -108,7 +108,7 @@ From a trained model `GGHEAD-xxx`, render interpolation videos that morph betwee
 python scripts/render_interpolation.py GGHEAD-xxx
 ```
 Replace `xxx` with the actual ID of the model.  
-The generated videos will be placed into `${GGHEAD_RENDERS_PATH}/interpolations/`  
+The generated videos will be placed into `${GGHEAD_RENDERINGS_PATH}/interpolations/`  
 ![GGHead Visualizer Showcase](static/example_interpolation.gif)  
 
 ## 3.3. Evaluation

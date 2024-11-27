@@ -18,7 +18,7 @@ from dreifus.util.visualizer import ImageWindow
 from eg3d import legacy, dnnlib
 from eg3d.dnnlib import EasyDict
 from eg3d.dnnlib.util import format_time, Logger
-from eg3d.metrics.metric_main import calc_metric, report_metric, register_metric, fid100, fid1k, fid50k_full
+from eg3d.metrics.metric_main import calc_metric, report_metric, register_metric
 from eg3d.torch_utils import training_stats, custom_ops
 from eg3d.torch_utils.misc import InfiniteSampler, copy_params_and_buffers, print_module_summary, params_and_buffers, nan_to_num, constant, \
     check_ddp_consistency
@@ -41,6 +41,7 @@ from gghead.model_manager.gghead_model_manager import GGHeadExperimentConfig, GG
 from gghead.models.gaussian_discriminator import GaussianDiscriminator
 from gghead.models.gghead_model import GGHeadModel
 from gghead.util.logging import LoggerBundle
+from gghead.util.metrics import fid100, fid1k, fid50k_full, fid10k
 
 
 # ----------------------------------------------------------------------------
@@ -485,6 +486,7 @@ def training_loop(
     # ----------------------------------------------------------
     register_metric(fid100)
     register_metric(fid1k)
+    register_metric(fid10k)
     register_metric(fid50k_full)
 
     # ----------------------------------------------------------

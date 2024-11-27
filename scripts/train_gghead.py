@@ -5,7 +5,7 @@ import torch
 import tyro
 from eg3d import dnnlib
 from eg3d.metrics import metric_main
-from eg3d.metrics.metric_main import register_metric, fid100, fid1k, fid50k_full
+from eg3d.metrics.metric_main import register_metric
 
 from gghead.config.eg3d_train_arguments import EG3DTrainArguments
 from gghead.config.gaussian_attribute import GaussianAttribute, GaussianAttributeConfig
@@ -18,6 +18,7 @@ from gghead.model_manager.finder import find_model_manager
 from gghead.model_manager.gghead_model_manager import GGHeadExperimentConfig
 from gghead.models.gaussian_discriminator import GaussianDiscriminatorConfig, DiscriminatorBlockConfig, DiscriminatorEpilogueConfig
 from gghead.models.gghead_model import GGHeadConfig, MappingNetworkConfig, SynthesisNetworkConfig, RenderingConfig, SuperResolutionConfig
+from gghead.util.metrics import fid100, fid1k, fid50k_full, fid10k
 
 
 def main(
@@ -588,6 +589,7 @@ def main(
     # ----------------------------------------------------------
     register_metric(fid100)
     register_metric(fid1k)
+    register_metric(fid10k)
     register_metric(fid50k_full)
 
     # Sanity checks.

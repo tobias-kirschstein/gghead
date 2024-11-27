@@ -79,7 +79,6 @@ class GGHeadStyleGAN2LossConfig(Config):
     mask_swap_prob: float = 0
     r1_gamma_mask: Optional[float] = None
 
-    # GSM
     decode_first: str = 'all'
     reg_weight: float = 0.1
     opacity_reg: float = 1

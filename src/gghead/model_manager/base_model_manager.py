@@ -61,7 +61,7 @@ class GGHeadGANOptimizerConfig(Config):
     freeze_generator: bool = False
 
 
-GGHGeneratorType = Literal['gaussians', 'GSM', 'triplanes']
+GGHGeneratorType = Literal['gaussians', 'triplanes']
 
 
 @dataclass

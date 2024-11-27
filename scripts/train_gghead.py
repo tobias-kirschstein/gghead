@@ -168,7 +168,7 @@ def main(
         image_snapshot_ticks: int = 50,
         use_vis_window: bool = False,
 ):
-    use_gaussians = generator_type in {'gaussians', 'GSM'}
+    use_gaussians = generator_type == 'gaussians'
     data = f"{GGHEAD_DATA_PATH}/{data}"
 
     # Initialize config.

@@ -5,6 +5,7 @@ import torch
 import tyro
 from eg3d import dnnlib
 from eg3d.metrics import metric_main
+from eg3d.metrics.metric_main import register_metric, fid100, fid1k, fid50k_full
 
 from gghead.config.eg3d_train_arguments import EG3DTrainArguments
 from gghead.config.gaussian_attribute import GaussianAttribute, GaussianAttributeConfig
@@ -583,6 +584,13 @@ def main(
     c.image_snapshot_ticks = image_snapshot_ticks
     c.random_seed = opts.seed
     c.data_loader_kwargs.num_workers = opts.workers
+
+    # ----------------------------------------------------------
+    # Register evaluation metrics
+    # ----------------------------------------------------------
+    register_metric(fid100)
+    register_metric(fid1k)
+    register_metric(fid50k_full)
 
     # Sanity checks.
     if c.batch_size % c.num_gpus != 0:

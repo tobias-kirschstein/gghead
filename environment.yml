@@ -17,7 +17,7 @@ dependencies:
   - jupyter
 
   # CUDA and PyTorch
-  - gcc
+  - gcc<12  # Needs to be <12 because nvcc does not like gcc>11
   - pytorch
   - torchvision
   - pytorch-cuda=11.8

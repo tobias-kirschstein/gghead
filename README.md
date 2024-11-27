@@ -11,7 +11,7 @@
 
 ## 1.1. Dependencies
 
-1. Create conda environment `ggh` with newest PyTorch and CUDA 11.8:
+1. Create conda environment `gghead` with newest PyTorch and CUDA 11.8:
     ```bash
     conda env create -f environment.yml
     ```
@@ -45,6 +45,19 @@
        TORCH_CUDA_ARCH_LIST="8.0" pip install gaussian_splatting@git+https://github.com/tobias-kirschstein/gaussian-splatting.git
        ```
        Choose the correct compute architecture(s) that match your setup. Consult [this website](https://arnon.dk/matching-sm-architectures-arch-and-gencode-for-various-nvidia-cards/) if unsure about the compute architecture of your graphics card.
+   2. *[Troubleshooting]*
+      On a Linux machine, if you run into
+      ```
+      gcc: fatal error: cannot execute 'cc1plus': posix_spawnp: No such file or directory
+      ``` 
+      or 
+      ```
+      x86_64-conda_cos6-linux-gnu-cc: error trying to exec 'cc1plus': execvp: No such file or directory
+      ```
+      try
+      ```
+      conda install gxx_linux-64 gcc_linux-64
+      ```
 5. Finally install the `gghead` module via:
    ```bash
    pip install -e .
@@ -53,7 +66,7 @@
 ## 1.2. Environment Paths
 
 All paths to data / models / renderings are defined by environment variables.  
-Please create a file in your home directory in `~/.config/diffusion-avatars/.env` with the following content:
+Please create a file in your home directory in `~/.config/gghead/.env` with the following content:
 ```python
 GGHEAD_DATA_PATH="..."
 GGHEAD_MODELS_PATH="..."
@@ -64,7 +77,8 @@ Replace the ... with the locations where data / models / renderings should be lo
  - `GGHEAD_DATA_PATH`: Location of the FFHQ dataset and foreground masks. Only needed for training. See [Section 2](#2-data) for how to obtain the datasets.
  - `GGHEAD_MODELS_PATH`: During training, model checkpoints and configs will be saved here. See [Section 4](#4-downloads) for downloading pre-trained models.
  - `GGHEAD_RENDERS_PATH`: Video renderings of trained models will be stored here
-If you do not like creating a config file in your home directory, you can instead hard-code the paths in the `env.py`.
+
+If you do not like creating a config file in your home directory, you can instead hard-code the paths in the [env.py](src/gghead/env.py).
 
 # 2. Data
 

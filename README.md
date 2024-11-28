@@ -90,11 +90,16 @@ If you do not like creating a config file in your home directory, you can instea
 
 Only needed for training. Download the zip files of the respective datasets and put them into `${GGHEAD_DATA_PATH}`.
 
-| Dataset   | Images + Cameras                                                                  | Masks                                                                                                       |
-|-----------|-----------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------|
-| FFHQ-512  | [FFHQ_png_512.zip](https://kaldir.vc.in.tum.de/gghead/FFHQ_png_512.zip)           | [FFHQ_png_512_masks_modnet.zip](https://kaldir.vc.in.tum.de/gghead/FFHQ_png_512_masks_modnet.zip)           |
+| Dataset  | Images + Cameras                                                                  | Masks                                                                                                       |
+|----------|-----------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------|
+| FFHQ-512 | [FFHQ_png_512.zip](https://kaldir.vc.in.tum.de/gghead/FFHQ_png_512.zip)           | [FFHQ_png_512_masks_modnet.zip](https://kaldir.vc.in.tum.de/gghead/FFHQ_png_512_masks_modnet.zip)           |
 | FFHQ-1024 | [FFHQ_png_1024.zip](https://kaldir.vc.in.tum.de/gghead/FFHQ_png_1024.zip)         | [FFHQ_png_1024_masks_modnet.zip](https://kaldir.vc.in.tum.de/gghead/FFHQ_png_1024_masks_modnet.zip)         |
-| AFHQ-512  | [afhq_v2_processed.zip](https://kaldir.vc.in.tum.de/gghead/afhq_v2_processed.zip) | [afhq_v2_processed_masks_modnet.zip](https://kaldir.vc.in.tum.de/gghead/afhq_v2_processed_masks_modnet.zip) |
+| AFHQ-512 | [afhq_v2_processed.zip](https://kaldir.vc.in.tum.de/gghead/afhq_v2_processed.zip) | [afhq_v2_processed_masks_modnet.zip](https://kaldir.vc.in.tum.de/gghead/afhq_v2_processed_masks_modnet.zip) |
+
+The .zip files for "Images + Cameras" were created with the dataset creation script of [EG3D](https://github.com/NVlabs/eg3d) at the respective resolution. The .zip files for "Masks" were obtained by running background matting module [MODNet](https://github.com/ZHKKKe/MODNet) on each image.
+
+The dataset files are under a Creative Commons BY-NC-SA 4.0 license being derivatives of the [FFHQ Dataset](https://github.com/NVlabs/ffhq-dataset). 
+This means, you can use, redistribute, and adapt it for non-commercial purposes, as long as you (a) give appropriate credit by citing the StyleGAN paper, (b) indicate any changes that you've made, and (c) distribute any derivative works under the same license (https://creativecommons.org/licenses/by-nc-sa/4.0/)
 
 # 3. Usage
 

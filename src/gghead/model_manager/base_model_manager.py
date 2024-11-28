@@ -31,7 +31,7 @@ class OptimizerConfig(Config):
 @dataclass
 class GGHeadTrainSetup(Config):
     project_name: str = 'generative-gaussian-heads'
-    group_name: str = 'generative-gaussian-heads'
+    group_name: str = 'gghead'
 
     gpus: int = 1
 

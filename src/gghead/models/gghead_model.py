@@ -834,7 +834,19 @@ class GGHeadModel(nn.Module):
             self._gaussian_model._rotation = gaussian_rotations[i].contiguous()  # Rotation needs to be contiguous!
             self._gaussian_model._opacity = gaussian_opacities[i]
 
-            override_color = None
+            if sh_ref_cam is not None:
+                gaussian_sh_ref_cam = pose_to_rendercam(sh_ref_cam, intrinsics, neural_rendering_resolution, neural_rendering_resolution, device=device)
+
+                sh_degree = self._config.gaussian_attribute_config.sh_degree
+                n_feature_channels = self._config.gaussian_attribute_config.n_color_channels
+                shs_view = self._gaussian_model.get_features.view(-1, (sh_degree + 1) ** 2, n_feature_channels).permute(0, 2, 1)
+                dir_pp = (self._gaussian_model.get_xyz - gaussian_sh_ref_cam.camera_center.repeat(1, 1))
+                dir_pp_normalized = dir_pp / dir_pp.norm(dim=-1, keepdim=True)
+                sh2rgb = eval_sh(sh_degree, shs_view, dir_pp_normalized)
+                colors = torch.clamp_min(sh2rgb + 0.5, 0.0)
+                override_color = colors
+            else:
+                override_color = None
 
             gaussian_bg = self._gaussian_bg_train
 

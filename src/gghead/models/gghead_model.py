@@ -19,7 +19,7 @@ from torch.nn.functional import grid_sample
 
 from gghead.constants import DEFAULT_INTRINSICS
 from gaussian_splatting.arguments import PipelineParams2
-from gaussian_splatting.gaussian_renderer import render
+from gaussian_splatting.gaussian_renderer import render_distwar as render
 from gaussian_splatting.scene import GaussianModel
 from gaussian_splatting.scene.cameras import pose_to_rendercam
 from gaussian_splatting.utils.sh_utils import C0, eval_sh
